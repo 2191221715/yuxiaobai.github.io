@@ -85,9 +85,30 @@
             right: 5px;
             left: auto;
         }
+
+/*   日记========================== */
+        .ban{
+           width:500px;
+           height:auto;
+           border:1px solid black;
+       }
+        #send {
+            width:40px;
+            height:25px;
+            font-size: 12px;
+            text-align: center;
+            line-height: 25px;
+            background: paleturquoise;
+        }
     </style>
 </head>
 <body>
+ 心情:<br/> <input type="text" id="mood"/><br/>
+笔记:<br/> <textarea id="network"></textarea><br/>
+<button id="send">发表</button>
+<div class="ban"></div>
+<p>虽然想做一个在线留言板，但是现在的我暂时还没那个水平，只能当成自己才能看到的日记来使用了</p>
+    <!-- =========日记 -->
 <div class="box" id="box">
     <div class="inner">
         <!--轮播图-->
@@ -235,6 +256,38 @@
             }
         }, 10);
     }
+    /* ===============日记 */
+    var mood=document.getElementById ("mood");
+var network=document.getElementById ("network");
+var send=document.getElementById ("send");
+var ban=document.querySelector (".ban");
+//localStorage.clear ();
+readdata();
+send.onclick =function(){
+  var time=new Date();
+  var shuju={
+        mymood:mood.value,
+        mynetwork:network .value,
+        now_time:time.toLocaleString()  //2019/7/2 下午7:42:15
+    };
+    // console.log(JSON.stringify (shuju));
+     localStorage.setItem (time.getTime(),JSON.stringify (shuju));
+    mood.value="";
+    network.value ="";
+
+    // alert("发表成功");
+     readdata();
+}
+function readdata(){
+    ban.innerHTML ="";
+    var length=localStorage.length-1;
+    for(var i=length;i>=0;i--){
+      var k=localStorage.key(i);  //获取key值
+      var data=JSON.parse (localStorage.getItem(k));  //
+        console.log(k);
+        ban.innerHTML +=data.mymood +" &nbsp;&nbsp;&nbsp;"+data.mynetwork +" &nbsp;&nbsp;&nbsp;"+ data.now_time +"<br/>";
+    }
+}
 </script>
 </body>
 </html>
